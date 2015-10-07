@@ -1,0 +1,9 @@
+---
+# defaults file for samba-server
+samba_share_path: /data/storage
+samba_workgroup: sc
+site_name: storagesite
+storage_user: storage
+storage_group: storage
+# Change by -e "storage_password=XXX"
+storage_password: otiqztlhlpfr

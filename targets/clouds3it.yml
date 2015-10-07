@@ -1,0 +1,5 @@
+# Required by ScienceCloud
+proxy_env:
+  https_proxy: http://proxy.uzh.ch:3128
+  http_proxy: http://proxy.uzh.ch:3128
+  ftp_proxy: http://proxy.uzh.ch:3128

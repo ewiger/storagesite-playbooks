@@ -1,0 +1,17 @@
+- name: update cache
+  apt: >
+      update_cache=yes 
+      cache_valid_time=3600
+  environment: proxy_env
+  tags:
+    - disk
+    - pkgs
+
+- name: "Install util-linux"
+  apt: >
+    name=util-linux
+    state=present
+  environment: proxy_env
+  tags:
+    - disk
+    - pkgs

@@ -1,0 +1,70 @@
+---
+#####################
+# Ubuntu
+- include: ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
+#####################
+# Debian
+- include: debian.yml
+  when: ansible_distribution == 'Debian'
+
+- name: Add a storage group
+  sudo: yes
+  group: name="{{ storage_group }}"
+    
+- name: Add a storage user
+  sudo: yes
+  user: > 
+    name="{{ storage_user }}"
+    shell=/bin/bash 
+    groups="{{ storage_group }}"
+
+- name: Storage path exists, permissions are right?
+  sudo: yes
+  file: >
+    path="{{ samba_share_path }}" 
+    state=directory
+    owner="{{ storage_user }}" 
+    group="{{ storage_group }}" 
+    mode=0775
+  
+# - name: Make sure permissions are right
+#   shell: "sudo chown {{ storage_user }}.{{ storage_group }} {{ samba_share_path }} && sudo chmod 0775 {{ samba_share_path }}"
+
+- name: Put a dummy file in the share
+  become: yes
+  become_user: "{{ storage_user }}"
+  template: src=default.j2
+            dest="{{ samba_share_path }}/info.txt"
+            mode=0644
+
+# - name: Add a share
+#   sudo: yes
+#   lineinfile: dest=/etc/samba/smb.conf
+#               regexp=''
+#               insertafter=EOF
+#               line='[{{ site_name }}-share1]\n\tpath = {{ samba_share_path }}\n\tread only = no\n;\tbrowseable = yes\n'
+
+- name: Copy the samba config
+  sudo: yes
+  template: src=etc_samba_smb.conf.j2
+            dest="/etc/samba/smb.conf"
+            mode=0644  
+
+
+- name: Create Samba Password for User(s)
+  sudo: yes
+  shell: "(echo {{ storage_password }}; echo {{ storage_password }}) | smbpasswd -s -a {{ storage_user }}"
+
+# TODO: firewall ufw
+
+- name: start samba
+  service: name=smbd
+           state=running
+           enabled=yes
+
+- name: start named
+  service: name=nmbd
+           state=running
+           enabled=yes

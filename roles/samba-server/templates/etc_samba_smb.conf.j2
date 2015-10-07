@@ -1,0 +1,23 @@
+#======================= Global Settings ===================================== 
+#{{ site_name }}
+[global]
+ workgroup = {{ samba_workgroup }}
+ server string = Samba Server %v
+ netbios name = {{ site_name }}
+ security = user
+ map to guest = bad user
+ dns proxy = no
+#============================ Share Definitions ==============================
+ 
+#### Public Share ####
+[{{ site_name }}-share-1]
+ path = {{ samba_share_path }} 
+ browsable =yes
+ writable = yes
+ #guest ok = no
+ #read only = no
+ valid users = @{{ storage_user }}
+ create mask = 0775
+ directory mask = 0775
+ force user = {{ storage_user }}
+

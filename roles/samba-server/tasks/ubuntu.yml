@@ -1,0 +1,26 @@
+- name: update cache
+  sudo: yes
+  apt: >
+      update_cache=yes 
+      cache_valid_time=3600
+  environment: proxy_env
+  tags:
+    - disk
+    - pkgs
+
+- name: "Install samba"
+  environment: proxy_env
+  sudo: yes
+  apt: >
+    name={{ item }}
+    state=present
+  with_items:
+    # - cups-libs
+    - linux-generic
+    - samba
+    - samba-common
+    - samba-client
+    - cifs-utils
+  tags:
+    - disk
+    - pkgs

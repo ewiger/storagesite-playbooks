@@ -1,0 +1,36 @@
+# Run it as:
+#   `ansible-playbook create-server.yml -vvv -e "storage_password=XXX"`
+#
+
+# - name: Create and mount disk
+#   hosts: storage_servers
+#   sudo: yes  
+#   vars:
+#     proxy_env: {}
+#   # Are we running on ScienceCloud?
+#   pre_tasks:
+#     - command: echo {{ ansible_ssh_host }}
+#       register: host
+#     - include_vars: targets/clouds3it.yml
+#       when: '"172.23." in host.stdout'
+#   roles:
+#     - ansible-disk
+
+
+- name: Create SAMBA server
+  hosts: storage_servers
+  vars:
+    # turn off/on debug deploy
+    deploy_debug: yes
+    # other vars
+    deploy_user: "{{ ansible_ssh_user }}"
+    site_name: pelkmanslab
+    proxy_env: {}
+  # Are we running on ScienceCloud?
+  pre_tasks:
+    - command: echo {{ ansible_ssh_host }}
+      register: host
+    - include_vars: targets/clouds3it.yml
+      when: '"172.23." in host.stdout'
+  roles:
+    - samba-server

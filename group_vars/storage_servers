@@ -1,0 +1,5 @@
+disk_additional_disks:
+- disk: /dev/vdb
+  fstype: ext4
+  mount_options: defaults
+  mount: /data
