@@ -1,0 +1,2 @@
+[storage_servers]
+storage_front ansible_ssh_host=storage.tissuemap.com ansible_ssh_user=ubuntu

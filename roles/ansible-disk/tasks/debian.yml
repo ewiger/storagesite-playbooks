@@ -7,11 +7,15 @@
     - disk
     - pkgs
 
-- name: "Install util-linux"
+- name: "Install packages"
   apt: >
-    name=util-linux
+    name={{ item }}
     state=present
   environment: proxy_env
+  with_items: 
+    - util-linux
+    - parted
+    - lvm2
   tags:
     - disk
     - pkgs

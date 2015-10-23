@@ -1,0 +1,12 @@
+- name: "Parted the block device"
+  sudo: yes
+  shell: |
+    executable=/bin/bash
+    if
+        [ -e {{ item.disk }} ]
+    then
+        [ -b {{ item.disk }}1 ] || ( parted -s {{ item.disk }} mklabel GPT && parted -s {{ item.disk }} mkpart primary ext4 1024KiB 100% && parted -s {{ item.disk }} set 1 lvm on )
+    fi
+  with_items: disk_additional_disks
+  tags:
+   - disk

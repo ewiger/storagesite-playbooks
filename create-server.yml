@@ -2,6 +2,7 @@
 #   `ansible-playbook create-server.yml -vvv -e "storage_password=XXX"`
 #
 
+# Uncomment to create disk
 # - name: Create and mount disk
 #   hosts: storage_servers
 #   sudo: yes  

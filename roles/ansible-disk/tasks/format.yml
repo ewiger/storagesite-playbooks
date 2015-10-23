@@ -1,0 +1,20 @@
+- name: "Check if the specified filesystem is supported"
+  fail: >
+     msg="Unsupported filesystem '{{ item.fstype }}' for disk '{{ item.disk }}'"
+  when: item.fstype not in disk_supported_fs_types
+  with_items: disk_additional_disks
+  tags:
+    - disk
+
+- name: "Format additional disks"
+  shell: |
+    executable=/bin/bash
+    if
+        [ -e {{ item.disk }}1 ]
+    then        
+        [[ `blkid | grep {{ item.disk }}1 | grep {{ item.fstype }}` ]] || mkfs.{{ item.fstype }} {{ item.disk }}1
+    fi
+  with_items: disk_additional_disks
+  tags:
+    - disk
+

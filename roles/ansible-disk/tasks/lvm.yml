@@ -1,0 +1,6 @@
+- name: "Create an LVM volume group for each additional disk"
+  sudo: yes
+  lvg: vg={{ item.volume_group }} pvs={{ item.disk }}1
+  with_items: disk_additional_disks
+  tags:
+   - disk

@@ -3,3 +3,6 @@ disk_additional_disks:
   fstype: ext4
   mount_options: defaults
   mount: /data
+  #volume_group: vgstorage
+  #logical_volume: lvstorage
+  #lvdev: "/dev/{{ volume_group }}/{{ logical_volume }}"
