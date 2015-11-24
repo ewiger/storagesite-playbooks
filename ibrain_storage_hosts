@@ -1,2 +1,2 @@
 [storage_servers]
-storage_front ansible_ssh_host=172.23.109.80 ansible_ssh_user=ubuntu
+storage_front ansible_ssh_host=172.23.186.16 ansible_ssh_user=ubuntu

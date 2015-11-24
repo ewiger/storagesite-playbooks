@@ -3,19 +3,21 @@
 #
 
 # Uncomment to create disk
-# - name: Create and mount disk
-#   hosts: storage_servers
-#   sudo: yes  
-#   vars:
-#     proxy_env: {}
-#   # Are we running on ScienceCloud?
-#   pre_tasks:
-#     - command: echo {{ ansible_ssh_host }}
-#       register: host
-#     - include_vars: targets/clouds3it.yml
-#       when: '"172.23." in host.stdout'
-#   roles:
-#     - ansible-disk
+- name: Create and mount disk
+  hosts: storage_servers
+  sudo: yes  
+  vars:
+    proxy_env: {}
+  # Are we running on ScienceCloud?
+  pre_tasks:
+    - command: echo {{ ansible_ssh_host }}
+      register: host
+    - include_vars: targets/clouds3it.yml
+      when: '"172.23." in host.stdout'
+  roles:
+    - ansible-disk
+  tags:
+    - disk-only
 
 
 - name: Create SAMBA server
