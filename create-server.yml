@@ -5,15 +5,9 @@
 # Uncomment to create disk
 - name: Create and mount disk
   hosts: storage_servers
-  sudo: yes  
+  sudo: yes
   vars:
     proxy_env: {}
-  # Are we running on ScienceCloud?
-  pre_tasks:
-    - command: echo {{ ansible_ssh_host }}
-      register: host
-    - include_vars: targets/clouds3it.yml
-      when: '"172.23." in host.stdout'
   roles:
     - ansible-disk
   tags:
@@ -23,17 +17,12 @@
 - name: Create SAMBA server
   hosts: storage_servers
   vars:
+    deploy_user: "{{ ansible_ssh_user }}"
     # turn off/on debug deploy
     deploy_debug: yes
     # other vars
-    deploy_user: "{{ ansible_ssh_user }}"
-    site_name: pelkmanslab
     proxy_env: {}
-  # Are we running on ScienceCloud?
-  pre_tasks:
-    - command: echo {{ ansible_ssh_host }}
-      register: host
-    - include_vars: targets/clouds3it.yml
-      when: '"172.23." in host.stdout'
+    site_name: plaque-data
+    storage_password: Q0LGZjBRWcgYX
   roles:
     - samba-server
